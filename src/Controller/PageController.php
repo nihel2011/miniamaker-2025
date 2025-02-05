@@ -30,11 +30,11 @@ final class PageController extends AbstractController
 
             // Vérification du profil complet d'utilisateur
             if (!$this->getUser()->isComplete()) {
-                return $this->render('page/complete.html.twig');
+                return $this->render('user/complete.html.twig');
             }
+            return $this->render('page/homepage.html.twig');
         }
 
-        return $this->render('page/homepage.html.twig');
     }
 
 }

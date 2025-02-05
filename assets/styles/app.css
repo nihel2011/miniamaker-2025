@@ -14,3 +14,23 @@ place-items: center;
 .logo {
     font-family: "Lexend Mega", sans-serif;
 }
+.help{
+    font-size: 0.95rem;
+    color: #555;
+}
+.container-xs { max-width: 400px; }
+.container-sm { max-width: 600px; }
+.container-md { max-width: 800px; }
+.container-lg { max-width: 1000px; }
+.container-xl { max-width: 1200px; }
+
+.center { 
+    display: grid;
+    place-items: center;
+ }
+
+.text-xl { font-size: 3rem; }
+.text-2xl { font-size: 3.5rem; }
+.text-3xl { font-size: 4rem; }
+.text-4xl { font-size: 4.5rem; }
+.text-5xl { font-size: 5rem; }
