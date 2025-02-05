@@ -87,9 +87,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->is_terms = false;
         $this->is_gpdr = false;
         $this->loginHistories = new ArrayCollection();
-        $this->image= 'default.png';
+        $this->image = 'default.png';
     }
-    
+
     #[ORM\PrePersist]
     public function setCreatedAtValue()
     {
@@ -348,5 +348,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function isComplete(): bool
+    {
+        if (
+            !empty($this->fullname) &&
+            !empty($this->username)
+        ) {
+            return true;
+        }
+        return false;
     }
 }
