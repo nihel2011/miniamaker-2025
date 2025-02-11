@@ -1,45 +1,34 @@
-<?php 
+<?php
 
 namespace App\Service;
 
-use App\Entity\LoginHistory;
 use App\Entity\User;
+use App\Entity\LoginHistory;
 use DeviceDetector\DeviceDetector;
 use Doctrine\ORM\EntityManagerInterface;
 
-
 /**
- * 
- * Class de gestion de l'historique de connexion des utilisateurs
+ * Classe de gestion de l'historique de connexion des utilisateurs
  */
+
 class LoginHistoryService
 {
+    public function __construct(readonly private EntityManagerInterface $em){}
 
-    // fonction constructeur pour injecter l'EntityManager
-    // readonly : le service ne peut pas modifier l'EntityManager
-    public function __construct(readonly private EntityManagerInterface $em) {}
-
-
-
-
-    // fonction ajouter l'historique
-    public function addHistory(User $user, string $userAgent, string $ip){
-
+    public function addHistory(User $user, string $userAgent, string $ip): void
+    {
         $deviceDetector = new DeviceDetector($userAgent);
         $deviceDetector->parse();
 
-            $loginHistory = new LoginHistory();
-            $loginHistory
-                ->setUser($user)
-                ->setIpAddress($ip)
-                ->setDevice($deviceDetector->getDeviceName())
-                ->setOs($deviceDetector->getOs()['name'])
-                ->setBrowser($deviceDetector->getClient()['name'])
-                ;
-                
-            $this->em->persist($loginHistory);
-            $this->em->flush();
-
+        $loginHistory = new LoginHistory();
+        $loginHistory
+            ->setUser($user)
+            ->setIpAddress($ip)
+            ->setDevice($deviceDetector->getDeviceName())
+            ->setOs($deviceDetector->getOs()['name'])
+            ->setBrowser($deviceDetector->getClient()['name'])
+            ;
+        $this->em->persist($loginHistory);
+        $this->em->flush();
     }
-
 }
