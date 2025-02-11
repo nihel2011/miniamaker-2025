@@ -2,33 +2,28 @@
 
 namespace App\Service;
 
-use App\Entity\Subscription;
+
+use Stripe\Stripe;
 use App\Entity\User;
-use App\Repository\SubscriptionRepository;
+use App\Entity\Subscription;
+use Stripe\Checkout\Session;
 use App\Service\AbstractService;
 use Doctrine\ORM\EntityManagerInterface;
-use Stripe\Stripe;
+use App\Repository\SubscriptionRepository;
+use SebastianBergmann\CodeCoverage\Report\PHP;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/*
- * Classe PaymentService dédiée à la gestion du 
- * paiement des abonnements des utilisateurs
-*/
 class PaymentService extends AbstractService
 {
     public function __construct(
         private ParameterBagInterface $params,
         private SubscriptionRepository $sr,
         private EntityManagerInterface $em,
-    ) 
-    {
-        $this->params = $params;
-        $this->sr = $sr;
-        $this->em = $em;
-        // parent::__construct();
-    }
+        private HttpClientInterface $httpClient,
+    ) {}
 
-    public function setPayment(User $user, int $amount): void
+    public function setPayment(User $user, int $amount): string
     {
         Stripe::setApiKey($this->params->get('STRIPE_SK'));
 
@@ -36,11 +31,33 @@ class PaymentService extends AbstractService
         $subscription
             ->setClient($user)
             ->setAmount($amount)
-            ->setFrequency($amount > 99 ? $this->params->get('STRIPE_SUB_ANNUALLY') : $this->params->get('STRIPE_SUB_MONTHLY'))
-            ;
+            ->setFrequency($amount > 99 ? 'year' : 'month')
+        ;
 
-        dd($subscription);
+        try {
+            $checkout_session = Session::create([
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'unit_amount' => $amount * 100,
+                        'recurring' => [
+                            'interval' => $subscription->getFrequency(),
+                        ],
+                        'product_data' => [
+                            'name' => 'Abonnement miniamaker',
+                        ],
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'subscription',
+                'success_url' => $this->params->get('APP_URL') . '/subscription/success?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => $this->params->get('APP_URL') . '/subscription/cancel',
+            ]);
 
-
+            return $checkout_session->url;
+        } catch (\Throwable $th) {
+            echo $th->getMessage() . PHP_EOL;
+            echo json_encode(['error' => $th->getMessage()]);
+        }
     }
 }
