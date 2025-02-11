@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $fullname = null;
 
     #[ORM\Column]
-    private ?bool $is_minor = null;
+    private ?bool $is_major = null;
 
     #[ORM\Column]
     private ?bool $is_terms = null;
@@ -64,9 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
-    #[ORM\ManyToOne(inversedBy: 'clients')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Subscription $subscription = null;
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
@@ -74,8 +71,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, LoginHistory>
      */
-    #[ORM\OneToMany(targetEntity: LoginHistory::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: LoginHistory::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $loginHistories;
+
+    #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
+    private ?Subscription $subscription = null;
 
     /**
      * Constructeur pour gérer les 
@@ -83,13 +83,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function __construct()
     {
-        $this->is_minor = false;
+        $this->is_major = false;
         $this->is_terms = false;
         $this->is_gpdr = false;
         $this->loginHistories = new ArrayCollection();
-        $this->image = 'default.png';
+        $this->image = "default.png";
     }
-
+    
     #[ORM\PrePersist]
     public function setCreatedAtValue()
     {
@@ -226,14 +226,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isMinor(): ?bool
+    public function isMajor(): ?bool
     {
-        return $this->is_minor;
+        return $this->is_major;
     }
 
-    public function setIsMinor(bool $is_minor): static
+    public function setIsMajor(bool $is_major): static
     {
-        $this->is_minor = $is_minor;
+        $this->is_major = $is_major;
 
         return $this;
     }
@@ -291,26 +291,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSubscription(): ?Subscription
-    {
-        return $this->subscription;
-    }
-
-    public function setSubscription(Subscription $subscription): static
-    {
-        // set the owning side of the relation if necessary
-        if ($subscription->getClients() !== $this) {
-            $subscription->addClient($this);
-        }
-
-        $this->subscription = $subscription;
-
-        return $this;
-    }
 
     public function getImage(): ?string
     {
         return $this->image;
+    }
+
+    public function getPathImage(): ?string
+    {
+        if ($this->image == 'default.png' || $this->image == null) {
+            return '/medias/images/users/default.png';
+        }
+        return '/medias/images/users/' . $this->image;
     }
 
     public function setImage(string $image): static
@@ -352,12 +344,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isComplete(): bool
     {
-        if (
-            !empty($this->fullname) &&
-            !empty($this->username)
-        ) {
+        if (!empty($this->username) && !empty($this->fullname)) {
             return true;
         }
+
         return false;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(Subscription $subscription): static
+    {
+        // set the owning side of the relation if necessary
+        if ($subscription->getClient() !== $this) {
+            $subscription->setClient($this);
+        }
+
+        $this->subscription = $subscription;
+
+        return $this;
     }
 }
