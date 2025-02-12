@@ -23,6 +23,7 @@ final class SubscriptionController extends AbstractController
                 intval($request->get('plan'))
             );
             return $this->redirect($checkoutUrl);
+
         }
 
         $this->addFlash('warning', "Vous êtes déjà abonné(e)");
