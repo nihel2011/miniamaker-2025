@@ -19,13 +19,12 @@ class MessageRepository extends ServiceEntityRepository
 //    /**
 //     * @return Message[] Returns an array of Message objects
 //     */
-//    public function findByExampleField($value): array
+//    public function findByDiscussion(int $discussionId): array
 //    {
 //        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
+//            ->andWhere('m.discrussion = :val')
+//            ->setParameter('val', $discussionId)
+//            ->orderBy('m.created_at', 'DESC')
 //            ->getQuery()
 //            ->getResult()
 //        ;
