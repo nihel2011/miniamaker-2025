@@ -50,7 +50,7 @@ class AppFixtures extends Fixture
 
             $user = new User();
             $user->setEmail($sluggy . '@' . $faker->freeEmailDomain());
-            $user->setRoles(['ROLE_AGENT']);
+            $user->setRoles(['ROLE_CLIENT']);
             $user->setPassword($this->passwordHasher->hashPassword($user, 'password123'));
             $user->setUsername($this->slugger->slug($prenom));
             $user->setFullname($fullname);
@@ -71,7 +71,7 @@ class AppFixtures extends Fixture
 
             $user = new User();
             $user->setEmail($sluggy . '@' . $faker->freeEmailDomain());
-            $user->setRoles(['ROLE_AGENT']);
+            $user->setRoles(['ROLE_PRO']);
             $user->setPassword($this->passwordHasher->hashPassword($user, 'password123'));
             $user->setUsername($this->slugger->slug($prenom));
             $user->setFullname($fullname);
