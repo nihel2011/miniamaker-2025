@@ -153,7 +153,7 @@ class AppFixtures extends Fixture
          $admin2->setRoles(['ROLE_ADMIN']);
          $admin2->setPassword($this->passwordHasher->hashPassword($admin, 'admin123'));
          $admin2->setUsername('Martin');
-         $admin2->setFullname('Admin MArtin');
+         $admin2->setFullname('Admin Martin');
          $admin2->setIsMajor(true);
          $admin2->setIsTerms(true);
          $admin2->setIsGpdr(true);
