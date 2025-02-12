@@ -1,3 +1,8 @@
+### Diagramme de classe
+    https://drawsql.app/teams/agiliteach/diagrams/miniamaker
+    
+
+
 ### Les commendes utilises :
     
 # Créer un nouveau projet:
@@ -33,19 +38,19 @@
 # Installer stripe :
     Composer require stripe/stripe-php
 
-# Security hach password:
+# Hash un mot de passe utilisateur:
     symfony console security:hash-password
 
 # installer ux-twig
     composer require symfony/ux-twig-component
 
-# creer twig component
+# Crée un composant Twig (ou Live)
     symfony console make:twig-component
 
 # install liip/imagine => pour l'image ( apres 'y')
     composer require liip/imagine-bundle
 
-# creer twig extension
+# Crée une nouvelle extension Twig avec sa classe runtime
     symfony console make:twig-extension
 
 # install orm fixtures
@@ -54,4 +59,26 @@
 # install faker php
     composer req fakerphp/faker --dev
 
-#
+# Ajouter des api a la base de donnée a partir de AppFixture:
+    symfony console d:f:l
+
+# installer les icons
+    composer require symfony/ux-icons
+
+# Exécute une migration vers une version spécifiée ou la dernière version disponible
+    symfony console d:m:m
+
+# Crée un authenticateur Guard de différents types
+    symfony console make:auth
+
+# Crée les opérations CRUD pour une classe d'entité Doctrine
+    symfony console make:crud
+
+# Crée une nouvelle migration basée sur les changements de la base de données
+    symfony console make:migration
+
+# Crée une nouvelle classe d'utilisateur de sécurité
+    symfony console make:user
+
+# Crée la base de données configurée
+    symfony console d:d:c
