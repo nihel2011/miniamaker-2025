@@ -10,7 +10,7 @@
         <form 
             hx-post={{path('app_message_show' , {id : app.request.get('id') }) }}
             hx-target="#messages-container"
-            hx-sway="beforeend"
+            hx-sway="beforebegin"
             class="d-flex justify-content-betwee mb-3"
             >
             <input type="hidden" name="csrf_token" value="{{ csrf_token('app_message') }}">
