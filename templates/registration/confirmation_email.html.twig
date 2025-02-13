@@ -1,11 +1,18 @@
-<h1>Hi! Please confirm your email!</h1>
-
+<h1>Confirmation Email</h1>
+<h1>Bonjour !</h1>
 <p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+	Merci de vous &ecirc;tre inscrit sur Miniamaker !
 </p>
 
 <p>
-    Cheers!
+	Pour confirmer votre adresse email, veuillez cliquer sur ce lien :
+	<br>
+	<a href="{{ signedUrl|raw }}">{{ signedUrl|raw }}</a>.
+		        Ce lien est valable
+	{{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
+
+<p>
+	Bien &agrave; vous<br>
+	L'&eacute;quipe de Miniamaker.
 </p>

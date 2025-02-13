@@ -1,0 +1,20 @@
+<h1>Connexion à votre compte</h1>
+<h1>Bonjour
+	{{ user.username }},</h1>
+<p>Nous avons enregistré une connexion à votre compte.</p>
+<p>Voici les détails de votre connexion :</p>
+<ul>
+	<li>Adresse IP :
+		{{ loginHistory.ipAddress|default('N/A') }}</li>
+	<li>Appareil :
+		{{ loginHistory.device|default('N/A') }}</li>
+	<li>Système d'exploitation :
+		{{ loginHistory.os|default('N/A') }}</li>
+	<li>Navigateur :
+		{{ loginHistory.browser|default('N/A') }}</li>
+</ul>
+<strong>Important :</strong>
+Si vous n'êtes pas à l'origine de cette connexion, veuillez nous contacter immédiatement.
+<p>À bientôt sur notre plateforme.</p>
+<p>Si vous avez des questions, contactez-nous à
+	<a href="mailto:contact@miniamaker.com">contact@minimaker.com</a>.</p>
