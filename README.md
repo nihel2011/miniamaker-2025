@@ -85,3 +85,9 @@
 
 ## Changer la branche de git
     git checkout Nom_branche
+
+## mailtrap
+    composer require symfony/mailtrap-mailer
+
+## cache: clear
+    symfony console cache:clear
