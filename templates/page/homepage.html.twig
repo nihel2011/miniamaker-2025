@@ -3,8 +3,96 @@
 {% block title %}Tableau de bord{% endblock %}
 
 {% block body %}
-    <h1>Tableau de bord</h1>
-    <button hx-get="/login" hx-swap="outerHTML">
-    Click Me
-  </button>
+<header class="text-center py-5 bg-light text-secondary">
+    <div class="container-md mb-5">
+        <h1 class="display-3 mb-4">
+            Bienvenue, {{ app.user.username }} !
+        </h1>
+        <a href="{{ path('app_profile') }}" class="btn btn-secondary btn-lg mt-4 py-3 px-5 text-light">
+            {{ ux_icon('mdi:account-circle', { class: 'h-1 me-2' }) }}
+            Mon profil
+        </a>
+    </div>
+</header>
+
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Abonnement Section -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-lg rounded-3 border-0">
+                        <div class="card-title fs-5 fw-bold bg-secondary text-white p-3 rounded-3 d-flex align-items-center">
+                            {{ ux_icon('mdi:cog', { class: 'h-1 me-2' }) }}
+                            Mon abonnement
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3">
+                                {{ app.user.subscription ? "Vous avez souscrit au plan" : "Vous n'avez pas d'abonnement actuellement" }}
+                            </p>
+                            {% if app.user.subscription is null or app.user.subscription.isActive == false %}
+                                <form action="{{ path('app_subscription') }}" method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token('app_profile') }}">
+                                    <div class="d-flex justify-content-between">
+                                        <select class="btn btn-outline-secondary w-100" name="plan">
+                                            <option value="990">990&euro; /an</option>
+                                            <option value="99">99&euro; /mois</option>
+                                        </select>
+                                        <button class="btn btn-primary" type="submit">S'abonner</button>
+                                    </div>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Landing Pages Section -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-lg rounded-3 border-0">
+                        <div class="card-title fs-5 fw-bold bg-secondary text-white p-3 rounded-3 d-flex align-items-center">
+                            {{ ux_icon('mdi:book', { class: 'h-1 me-2' }) }}
+                            Mes landing pages
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3">
+                                {{ app.user.detail.landingPages.name ?? 'Aucune landing page actuellement' }}
+                            </p>
+                            <a href="{{ path('lp_add') }}" class="btn btn-primary">Créer une page</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Messages -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-lg rounded-3 border-0">
+                        <div class="card-title fs-5 fw-bold bg-secondary text-white p-3 rounded-3 d-flex align-items-center">
+                            {{ ux_icon('mdi:message-text', { class: 'h-1 me-2' }) }}
+                            Mes derniers échanges
+                        </div>
+                        <div class="card-body">
+                            <p>Les derniers messages apparaîtront ici.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Videos -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-lg rounded-3 border-0">
+                        <div class="card-title fs-5 fw-bold bg-secondary text-white p-3 rounded-3 d-flex align-items-center">
+                            {{ ux_icon('mdi:video', { class: 'h-1 me-2' }) }}
+                            Mes dernières vidéos
+                        </div>
+                        <div class="card-body">
+                            <p>Les dernières vidéos seront affichées ici.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
 {% endblock %}
