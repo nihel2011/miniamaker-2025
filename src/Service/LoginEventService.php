@@ -31,8 +31,8 @@ class LoginEventService implements EventSubscriberInterface
         if ($user && method_exists($user, 'getEmail')) {
             // Utilisation de Twig pour rendre le template
             $htmlContent = $this->twig->render('security/connexion_email.html.twig', [
-                'user' => $user, 
-                'loginHistory' => $loginHistorie,  // Passer l'utilisateur au template
+                'user' => $user, // Passer l'utilisateur au template
+                'loginHistory' => $loginHistorie,  
             ]);
 
             // Création de l'email avec le contenu HTML rendu par Twig
