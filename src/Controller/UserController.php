@@ -14,16 +14,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 final class UserController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $em
-    ) {}
+        private EntityManagerInterface $em,
+    ){}
     
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
-    public function index(
-        Request $request, 
-    
-        UploaderService $us,
-        UserPasswordHasherInterface $passwordHasher
-        ): Response
+    public function index(Request $request, UploaderService $us,UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserFormType::class, $user);
@@ -31,6 +26,7 @@ final class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
+            $user = $this->getUser();
             $password = $passwordHasher->isPasswordValid( // isPasswordValid() retourne true ou false
                 $user, // Utilisateur actuel
                 $form->get('password')->getData() // Récupère le password du formulaire
@@ -70,7 +66,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/complete', name: 'app_complete', methods: ['POST'])]
-    public function complete(Request $request, EntityManagerInterface $em): Response
+    public function complete(Request $request): Response
     {
         $data = $request->getPayload(); // on récupère les données du formulaire
         if (!empty($data->get('username')) && !empty($data->get('fullname'))) {
