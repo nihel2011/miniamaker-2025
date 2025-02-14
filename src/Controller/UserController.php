@@ -20,7 +20,7 @@ final class UserController extends AbstractController
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
     public function index(
         Request $request, 
-        EntityManagerInterface $em,
+    
         UploaderService $us,
         UserPasswordHasherInterface $passwordHasher
         ): Response
